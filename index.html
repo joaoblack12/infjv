@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="auto">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark light">
+  <title>Links • Contato</title>
+  <meta name="description" content="Todos os meus contatos em um só lugar — Instagram, WhatsApp e mais." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --text: #0b0b0c;
+      --muted: #6b7280;
+      --surface: rgba(255,255,255,0.85);
+      --surface-2: rgba(255,255,255,0.6);
+      --border: rgba(15, 23, 42, 0.12);
+      --highlight: #8b5cf6;
+      --highlight-2: #ec4899;
+      --radius: 18px;
+      --shadow: 0 10px 30px rgba(0,0,0,.10), 0 2px 8px rgba(0,0,0,.06);
+      --shadow-strong: 0 20px 60px rgba(0,0,0,.25);
+      --bg-mobile: url('assets/bg-mobile-light.jpg');
+      --bg-desktop: url('assets/bg-desktop-light.jpg');
+    }
+    :root[data-theme="dark"] {
+      --text: #ffffff;
+      --muted: #b3b8c3;
+      --surface: rgba(12,12,16,0.75);
+      --surface-2: rgba(12,12,16,0.55);
+      --border: rgba(255,255,255,0.08);
+      --highlight: #a78bfa;
+      --highlight-2: #f472b6;
+      --bg-mobile: url('assets/bg-mobile.jpg');
+      --bg-desktop: url('assets/bg-desktop.jpg');
+    }
+
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--text);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      background: transparent;
+      position: relative;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image: var(--bg-mobile);
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      z-index: -2;
+      filter: saturate(105%) contrast(105%);
+    }
+    @media (min-width: 768px) {
+      body::before { background-image: var(--bg-desktop); }
+    }
+    body::after {
+      content: "";
+      position: fixed; inset: 0;
+      background: radial-gradient(1000px 600px at 0% 0%, rgba(255,255,255,.06), transparent 60%),
+                  radial-gradient(1000px 600px at 100% 100%, rgba(0,0,0,.12), transparent 55%);
+      z-index: -1;
+    }
+
+    .wrap { display: grid; place-items: center; min-height: 100dvh; padding: 24px; }
+    .card {
+      width: min(820px, 100%);
+      background: var(--surface);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border);
+      border-radius: calc(var(--radius) + 6px);
+      box-shadow: var(--shadow);
+      overflow: clip;
+    }
+
+    .header {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 16px;
+      align-items: center;
+      padding: 20px 22px;
+      background: linear-gradient(120deg, var(--surface) 0%, var(--surface-2) 100%);
+      border-bottom: 1px solid var(--border);
+    }
+    .avatar {
+      width: 72px; height: 72px; border-radius: 50%;
+      overflow: hidden; border: 2px solid rgba(255,255,255,.5);
+      box-shadow: 0 6px 20px rgba(0,0,0,.25);
+      background: linear-gradient(135deg, var(--highlight), var(--highlight-2));
+    }
+    .avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .title-group h1 {
+      font-size: clamp(18px, 3vw, 26px);
+      line-height: 1.1; margin: 0 0 2px;
+      letter-spacing: -0.02em;
+    }
+
+    /* Switch + Botões de tema */
+    .switch-area { display: flex; align-items: center; gap: 10px; }
+    .switch-area label { font-size: 12px; color: var(--muted); }
+    .switch { position: relative; width: 56px; height: 32px; }
+    .switch input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+    .track {
+      position: absolute; inset: 0; border-radius: 999px;
+      background: rgba(0,0,0,.15);
+      box-shadow: inset 0 0 0 1px var(--border);
+      transition: background .2s ease;
+    }
+    :root[data-theme="dark"] .track { background: rgba(255,255,255,.15); }
+    .thumb {
+      position: absolute; top: 3px; left: 3px;
+      width: 26px; height: 26px; border-radius: 50%;
+      background: white;
+      box-shadow: 0 4px 12px rgba(0,0,0,.25);
+      transition: transform .25s cubic-bezier(.2,.8,.2,1);
+    }
+    input:checked + .track .thumb { transform: translateX(24px); }
+    .spark {
+      position: absolute; inset: -6px; pointer-events: none;
+      background: radial-gradient(16px 16px at 20% 50%, var(--highlight), transparent 60%),
+                  radial-gradient(22px 22px at 80% 50%, var(--highlight-2), transparent 65%);
+      opacity: .0; transition: opacity .25s; border-radius: 999px; filter: blur(6px);
+    }
+    input:checked + .track .spark { opacity: .35; }
+
+    .theme-chooser {
+      display: inline-flex; border: 1px solid var(--border);
+      border-radius: 12px; overflow: hidden; background: var(--surface);
+      margin-left: 10px;
+    }
+    .theme-chooser .seg {
+      padding: 8px 10px; font-weight: 600; font-size: 12px; border: 0;
+      background: transparent; color: var(--muted); cursor: pointer;
+    }
+    .theme-chooser .seg[aria-pressed="true"] {
+      background: linear-gradient(135deg, var(--highlight), var(--highlight-2));
+      color: #fff;
+    }
+
+    .content { padding: 24px; display: grid; gap: 22px; }
+    .links { display: grid; grid-template-columns: 1fr; gap: 12px; }
+    @media (min-width: 720px) { .links { grid-template-columns: repeat(2, 1fr); } }
+
+    .link {
+      display: grid; grid-template-columns: 44px 1fr auto; align-items: center; gap: 14px;
+      padding: 14px 16px; border-radius: var(--radius);
+      background: linear-gradient(180deg, var(--surface), var(--surface-2));
+      border: 1px solid var(--border);
+      text-decoration: none; color: var(--text);
+      box-shadow: 0 2px 14px rgba(0,0,0,.06);
+      transition: transform .12s ease, box-shadow .2s ease, border-color .2s ease;
+    }
+    .link:hover { transform: translateY(-2px); box-shadow: var(--shadow); border-color: rgba(142,68,173,.35); }
+    .link:active { transform: translateY(0); box-shadow: 0 1px 6px rgba(0,0,0,.18); }
+    .link .ico {
+      width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center;
+      background: radial-gradient(circle at 20% 20%, rgba(255,255,255,.6), transparent 40%),
+                  linear-gradient(135deg, var(--highlight), var(--highlight-2));
+      color: white; box-shadow: inset 0 0 1px rgba(255,255,255,.5), 0 6px 18px rgba(0,0,0,.25);
+    }
+    .link .txt .title { font-weight: 700; font-size: 15px; letter-spacing: .2px; }
+    .link .txt .sub { font-size: 12px; color: var(--muted); }
+    .link .cta { font-size: 12px; color: var(--muted); }
+
+    .footer {
+      padding: 16px 22px;
+      display: flex; justify-content: space-between; align-items: center; gap: 12px;
+      border-top: 1px solid var(--border);
+      background: linear-gradient(120deg, var(--surface-2) 0%, var(--surface) 100%);
+      font-size: 12px; color: var(--muted);
+    }
+
+    :focus-visible { outline: 2px solid var(--highlight); outline-offset: 3px; border-radius: 12px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <article class="card" role="region" aria-label="Cartão de links de contato">
+      <header class="header">
+        <div class="avatar" aria-hidden="true">
+          <img id="avatar" alt="Avatar" src="assets/avatar.jpg"/>
+        </div>
+        <div class="title-group">
+          <h1 id="name">João Victhor</h1>
+        </div>
+        <div class="switch-area">
+          <label for="theme">Tema</label>
+          <div class="switch" title="Alternar tema">
+            <input id="theme" type="checkbox" aria-label="Alternar tema">
+            <div class="track">
+              <div class="spark"></div>
+              <div class="thumb"></div>
+            </div>
+          </div>
+          <div class="theme-chooser" role="group" aria-label="Escolher tema">
+            <button class="seg" id="btnLight" data-mode="light" aria-pressed="false">Claro</button>
+            <button class="seg" id="btnDark" data-mode="dark" aria-pressed="false">Escuro</button>
+          </div>
+        </div>
+      </header>
+
+      <section class="content">
+        <div class="links" id="links"></div>
+      </section>
+
+      <footer class="footer">
+        <span id="footer">JV</span>
+      </footer>
+    </article>
+  </div>
+
+  <script>
+    const PROFILE = {
+      handle: "JV",
+      whatsapp: "5540028922",
+      avatar: "assets/avatar.jpg",
+      links: [
+        { label: "Instagram", sub: "@joaoblack12", href: "https://www.instagram.com/joaoblack12/", icon: "instagram" },
+        { label: "WhatsApp", sub: "Enviar mensagem", href: "", icon: "whatsapp" },
+        { label: "Site/Portfólio", sub: "corinthians.com.br", href: "https://www.corinthians.com.br/", icon: "link" },
+        { label: "TikTok", sub: "@jv_lobato22", href: "https://www.tiktok.com/@jv_lobato22?lang=pt-BR", icon: "tiktok" }
+      ]
+    };
+
+    const root = document.documentElement;
+    const themeInput = document.querySelector('#theme');
+    const btnLight = document.querySelector('#btnLight');
+    const btnDark = document.querySelector('#btnDark');
+
+    function setSeg(mode) {
+      btnLight.setAttribute('aria-pressed', String(mode==='light'));
+      btnDark.setAttribute('aria-pressed', String(mode==='dark'));
+    }
+
+    function applyTheme(mode) {
+      root.setAttribute('data-theme', mode === 'dark' ? 'dark' : 'light');
+      document.querySelector('meta[name="color-scheme"]').setAttribute('content', mode);
+      themeInput.checked = (mode === 'dark');
+      setSeg(mode);
+      localStorage.setItem('theme', mode);
+    }
+
+    (function initTheme() {
+      const saved = localStorage.getItem('theme');
+      if (saved === 'light' || saved === 'dark') { applyTheme(saved); }
+      else {
+        const mql = window.matchMedia('(prefers-color-scheme: dark)');
+        applyTheme(mql.matches ? 'dark' : 'light');
+        mql.addEventListener('change', e => applyTheme(e.matches ? 'dark' : 'light'));
+      }
+    })();
+
+    themeInput.addEventListener('change', () => applyTheme(themeInput.checked ? 'dark' : 'light'));
+    btnLight.addEventListener('click', () => applyTheme('light'));
+    btnDark.addEventListener('click', () => applyTheme('dark'));
+
+    function icon(name) {
+      const s = {
+        instagram: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.5" y2="6.5"/></svg>',
+        whatsapp:  '<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M.057 24l1.687-6.163A11.867 11.867 0 0 1 0 11.993C0 5.373 5.373 0 11.993 0S24 5.373 24 11.993 18.627 24 11.993 24a11.9 11.9 0 0 1-5.651-1.436L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.35 1.593 5.448.003 9.884-4.429 9.889-9.877.006-5.462-4.415-9.898-9.881-9.903-5.455-.005-9.897 4.427-9.902 9.882-.002 2.225.651 3.891 1.746 5.634L3.31 20.71l3.344-.517z"/><path fill="#fff" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.965-.273-.099-.472-.148-.671.149-.198.297-.768.965-.941 1.164-.173.198-.347.223-.644.074-.297-.149-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.52.149-.173.198-.298.298-.497.099-.198.05-.372-.025-.521-.074-.149-.671-1.611-.919-2.206-.242-.579-.487-.501-.671-.51l-.571-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.262.489 1.694.626.712.227 1.36.195 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414-.074-.124-.272-.198-.57-.347z"/></svg>',
+        link:      '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 1 0-7.07-7.07l-1 1"/><path d="M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 1 0 7.07 7.07l1-1"/></svg>',
+        tiktok:    '<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M16 8.16a6.3 6.3 0 0 0 3.7 1.21V12a9.3 9.3 0 0 1-3.7-.77v4.65a6.75 6.75 0 1 1-6.75-6.75c.35 0 .7.03 1.03.1v3.05a3.75 3.75 0 1 0 2.72 3.61V3.5H16v4.66z"/></svg>'
+      };
+      return s[name] || s['link'];
+    }
+
+    const el = (tag, attrs = {}, ...children) => {
+      const node = document.createElement(tag);
+      Object.entries(attrs).forEach(([k,v]) => {
+        if (k === 'class') node.className = v;
+        else if (k === 'html') node.innerHTML = v;
+        else if (k.startsWith('on') && typeof v === 'function') node.addEventListener(k.slice(2), v);
+        else if (v !== null && v !== undefined) node.setAttribute(k, v);
+      });
+      children.forEach(c => { if (c) node.appendChild(typeof c === 'string' ? document.createTextNode(c) : c); });
+      return node;
+    };
+
+    function render() {
+      document.getElementById('name').textContent = "João Victhor";
+      document.getElementById('footer').textContent = PROFILE.handle;
+
+      const list = document.getElementById('links');
+      list.innerHTML = "";
+      PROFILE.links.forEach(item => {
+        let href = item.href;
+        if (item.icon === 'whatsapp') {
+          href = PROFILE.whatsapp ? `https://wa.me/${PROFILE.whatsapp}` : href || '#';
+        }
+        const a = el('a', { class: 'link', href, target: '_blank', rel: 'noopener noreferrer' },
+          el('div', { class: 'ico', 'aria-hidden': 'true', html: icon(item.icon) }),
+          el('div', { class: 'txt' },
+            el('div', { class: 'title' }, item.label),
+            el('div', { class: 'sub' }, item.sub || '')
+          ),
+          el('div', { class: 'cta' }, 'Abrir →')
+        );
+        list.appendChild(a);
+      });
+    }
+    render();
+  </script>
+</body>
+</html>
